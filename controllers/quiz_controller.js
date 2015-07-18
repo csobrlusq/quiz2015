@@ -42,8 +42,10 @@ exports.show = function( req, res ) {
 // GET ANSWER
 exports.answer = function ( req, res ) {
 	var resultado = 'incorrecta';
+	console.log(req.query.respuesta);
+	console.log(req.quiz.respuesta);
 	if ( req.query.respuesta === req.quiz.respuesta ) {
-		respuesta = 'correcta';
+		resultado = 'correcta';
 	}
 	res.render( 'quizes/answer', 
 		{ quiz: req.quiz, respuesta: resultado } );
