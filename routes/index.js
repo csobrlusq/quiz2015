@@ -20,4 +20,7 @@ router.get( '/author', function( req,res ) {
 	res.render( 'author' );
 });
 
+router.get( '/quizes/new', quizController.new );
+router.post( '/quizes/create', quizController.create );
+
 module.exports = router;
