@@ -20,18 +20,18 @@ exports.index = function(req, res) {
 		// Remplaza el principio del string, los espacios, y el fin del string con % y lo guarda en la variable search
 		var search = req.query.search.replace(/^\b|\s|\b$/g, '%');
 		models.Quiz.findAll({ where: [ "pregunta like ?", search ]}).then( function( quizes ) {
-			res.render( 'quizes/index', { quizes: quizes });}
+			res.render( 'quizes/index', { quizes: quizes, errors: [] });}
 		).catch(function(error) { next(error); });
 	} else {
 		models.Quiz.findAll().then( function( quizes ) {
-			res.render( 'quizes/index', { quizes: quizes });}
+			res.render( 'quizes/index', { quizes: quizes, errors: [] });}
 		).catch(function(error) { next(error); });
 	}
 };
 
 // GET /quizes/:id
 exports.show = function( req, res ) {
-	res.render( 'quizes/show', { quiz: req.quiz } );
+	res.render( 'quizes/show', { quiz: req.quiz, errors: []} );
 };
 
 // GET ANSWER
@@ -41,7 +41,11 @@ exports.answer = function ( req, res ) {
 		resultado = 'correcta';
 	}
 	res.render( 'quizes/answer', 
-		{ quiz: req.quiz, respuesta: resultado } );
+		{ 	quiz: req.quiz, 
+			respuesta: resultado, 
+			errors: []
+		} 
+	);
 };
 
 //GET /quizes/new
@@ -49,16 +53,25 @@ exports.new = function( req, res ) {
 	var quiz = models.Quiz.build( // crear objeto quiz
 		{ pregunta: 'Pregunta', respuesta: 'Respuesta' }
 	);
-	res.render( 'quizes/new', { quiz: quiz});
+	res.render( 'quizes/new', { quiz: quiz, errors: []});
 };
 
 
 //POST /quizes/create
 exports.create = function (req,res) {
 	var quiz = models.Quiz.build ( req.body.quiz );
-
-	// Guarda los campos pregunta y respuesta
-	quiz.save({ fields: ["pregunta", "respuesta"]}).then(function(){
-		res.redirect('/quizes');
-	});
+	quiz
+	.validate()
+	.then(
+		function(err) {
+			if (err) {
+				res.render('/quizes/new', {quiz: quiz, errors: err.errors});
+			} else {
+				// Guarda los campos pregunta y respuesta
+				quiz
+				.save({ fields: [ "pregunta", "respuesta" ]})
+				.then(function(){ res.redirect('/quizes'); });
+			}
+		}
+	);
 };

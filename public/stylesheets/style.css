@@ -3,7 +3,7 @@
 	padding: 0;
 }
 body {
-  font: 16px Georgia, serif;
+  font: 14px Georgia, serif;
 }
 
 #page-wrap {
@@ -16,6 +16,9 @@ body {
 	color: black;
 }
 
+table {
+	margin: auto;
+}
 section>div {
 	padding: 20px;
 }
@@ -26,5 +29,11 @@ header, nav, section, footer {
 }
 
 nav span {
-	margin: 0 10px 0 0;
+	margin: 0 10px 0 5px;
 }
+
+#ErrorMsgs {
+	color: red;
+	font-size: smaller;
+}
+
