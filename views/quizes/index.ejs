@@ -13,8 +13,13 @@
 				<%= quizes[i].pregunta %>
 			</a>
 			<a href="quizes/<%= quizes[i].id %>/edit">
-				[ editar ]
+				&nbsp;[editar]
 			</a>
+			<form method="POST" action="quizes/<%= quizes[i].id %>?_method=delete">
+				<button type="submit" onclick="return confirm('Borrar: <%= quizes[i].pregunta %>');">
+					Eliminar
+				</button>
+			</form>
 		</td>
 	</tr>
 <% } %>

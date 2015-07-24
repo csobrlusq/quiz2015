@@ -48,7 +48,7 @@ exports.answer = function ( req, res ) {
 	);
 };
 
-//GET /quizes/new
+// GET /quizes/new
 exports.new = function( req, res ) {
 	var quiz = models.Quiz.build( // crear objeto quiz
 		{ pregunta: 'Pregunta', respuesta: 'Respuesta' }
@@ -99,4 +99,15 @@ exports.update = function (req,res) {
 			}
 		}
 	);
+}
+
+// DELETE /quizes/:quizId
+exports.destroy = function (req,res) {
+	req.quiz.destroy()
+	.then(
+		function(err) {
+			res.redirect('/quizes');
+		}
+	)
+	.catch(function(error) {next(error)});
 };
