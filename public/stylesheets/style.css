@@ -37,3 +37,7 @@ nav span {
 	font-size: smaller;
 }
 
+.right {
+	color: red;
+	float: right;
+}
