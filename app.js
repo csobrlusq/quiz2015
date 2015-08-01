@@ -40,6 +40,27 @@ app.use( function( req, res, next ) {
 	next();
 });
 
+// Auto-logout
+app.use( function( req, res, next ) {
+	var now = new Date(); // captura hora actual
+
+	if( req.session.user ) { // Comprueba si existe una sesion activa
+		ref = new Date( req.session.user.date ); // Crea una fecha usando la variable de sesion almacenada
+		if( now-ref >= 120000 ){ 
+			res.redirect('/logout'); // Redirige a /logout, el cual destruye la sesion
+			next();
+		} else {
+			req.session.user.date = now; // Refresca la hora en la sesion
+			next();
+		}
+	} else {
+		next();
+	}
+});
+
+
+
+
 app.use('/', routes);
 
 // catch 404 and forward to error handler
