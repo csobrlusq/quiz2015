@@ -4,6 +4,7 @@
 		<input type="submit" value="Buscar">
 	</form>
 </div>
+<div>
 <h3>Preguntas:</h3>
 <table>
 <% var i; for ( i = 0; i < quizes.length; i++ ) { %>
@@ -12,16 +13,32 @@
 			<a href="quizes/<%= quizes[i].id %>">
 				<%= quizes[i].pregunta %>
 			</a>
-			<a href="quizes/<%= quizes[i].id %>/edit">
-				&nbsp;[editar]
-			</a>
+		</td>
+		
+		<% if(session.user) { %>
+		<td>
+			<form method="GET" action="quizes/<%= quizes[i].id %>/edit">
+				<button type="submit">
+					Editar
+				</button>
+			</form>
+		</td>
+		<td>
 			<form method="POST" action="quizes/<%= quizes[i].id %>?_method=delete">
 				<button type="submit" onclick="return confirm('Borrar: <%= quizes[i].pregunta %>');">
 					Eliminar
 				</button>
 			</form>
 		</td>
+		<% } %>
+
 	</tr>
 <% } %>
 </table>
+</div>
+
+<% if(session.user) { %>
+
 <p><a href="quizes/new">Añadir pregunta nueva</a></p>
+
+<% } %>

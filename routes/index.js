@@ -28,15 +28,15 @@ router.get( '/author', function( req,res ) {
 });
 
 // Crear preguntas
-router.get( '/quizes/new', quizController.new );
-router.post( '/quizes/create', quizController.create );
+router.get( '/quizes/new', sessionController.userRequired, quizController.new );
+router.post( '/quizes/create', sessionController.userRequired, quizController.create );
 
 // Modificar preguntas
-router.get( '/quizes/:quizId(\\d+)/edit', quizController.edit);
-router.put( '/quizes/:quizId(\\d+)', quizController.update);
+router.get( '/quizes/:quizId(\\d+)/edit', sessionController.userRequired, quizController.edit);
+router.put( '/quizes/:quizId(\\d+)', sessionController.userRequired, quizController.update);
 
 // Eliminar preguntas
-router.delete( '/quizes/:quizId(\\d+)', quizController.destroy );
+router.delete( '/quizes/:quizId(\\d+)', sessionController.userRequired, quizController.destroy );
 
 // Comentarios
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
