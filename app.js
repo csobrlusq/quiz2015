@@ -42,9 +42,19 @@ app.use( function( req, res, next ) {
 
 // Auto-logout
 app.use( function( req, res, next ) {
-
 	if( req.session.user ) { // Comprueba si existe una sesion activa
-			req.session.cookie.expires = new Date( Date.now() + 120000 ); 
+		var now = new Date();
+		var last = new Date( req.session.user.date );
+		var time = now - last;
+		if( time > 120000 ) {
+			delete req.session.user;
+			next();
+		} else {
+			req.session.user.date = now;
+			next();
+		}
+	} else {
+		next();
 	}
 });
 
